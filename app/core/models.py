@@ -13,7 +13,7 @@ class UserManager(BaseUserManager):
         Creates and saves a new user
         """
         if not email:
-            raise ValueError('Useres must have an email adress')
+            raise ValueError('User must have an email adress')
         user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
