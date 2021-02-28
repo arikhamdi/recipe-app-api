@@ -6,9 +6,11 @@ from core.models import Tag
 from recipe import serializers
 
 
-class TagViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+class TagViewSet(viewsets.GenericViewSet,
+                 mixins.ListModelMixin,
+                 mixins.CreateModelMixin):
     """
-    MAnage tags in the database
+    Manage tags in the database
     """
     autentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -20,3 +22,9 @@ class TagViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         Return objects for the current authenticated user only
         """
         return self.queryset.filter(user=self.request.user).order_by('-name')
+
+    def perform_create(self, serializer):
+        """
+        Create a new tag
+        """
+        serializer.save(user=self.request.user)
